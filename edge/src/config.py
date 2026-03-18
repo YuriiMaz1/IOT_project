@@ -43,6 +43,10 @@ TRAFFIC_LIGHTS_CONFIG_PATH = os.environ.get("TRAFFIC_LIGHTS_CONFIG_PATH") or os.
     os.path.dirname(__file__),
     "traffic_lights.json",
 )
+SPEED_SIGNS_CONFIG_PATH = os.environ.get("SPEED_SIGNS_CONFIG_PATH") or os.path.join(
+    os.path.dirname(__file__),
+    "speed_signs.json",
+)
 MIN_DIRECTION_MOVEMENT_M = (
     try_parse_float(os.environ.get("MIN_DIRECTION_MOVEMENT_M")) or 5.0
 )

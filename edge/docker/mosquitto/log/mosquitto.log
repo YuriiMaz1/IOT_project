@@ -35,3 +35,23 @@
 1772561577: New connection from 172.22.0.1:35098 on port 1883.
 1772561577: New client connected from 172.22.0.1:35098 as mqtt-explorer-1d51d89a (p4, c1, k60).
 1772561608: Client mqtt-explorer-1d51d89a [172.22.0.1:35098] disconnected.
+1773857555: mosquitto version 2.1.2 starting
+1773857555: Config loaded from /mosquitto/config/mosquitto.conf.
+1773857555: Bridge support available.
+1773857555: Persistence support available.
+1773857555: TLS support available.
+1773857555: TLS-PSK support available.
+1773857555: Websockets support available.
+1773857555: Opening ipv4 listen socket on port 1883.
+1773857555: Opening ipv6 listen socket on port 1883.
+1773857555: mosquitto version 2.1.2 running
+1773857556: New connection from 172.26.0.3:35869 on port 1883.
+1773857556: New client connected from 172.26.0.3:35869 as auto-E73157A0-D38C-0AE8-904C-4040E896DB35 (p4, c1, k60).
+1773857557: New connection from 172.26.0.5:38983 on port 1883.
+1773857557: New client connected from 172.26.0.5:38983 as auto-DCBEF6CE-07CA-F147-FE1F-5C0C29596BF2 (p4, c1, k60).
+1773857557: New connection from 172.26.0.5:48721 on port 1883.
+1773857557: New client connected from 172.26.0.5:48721 as auto-D65079D5-1C38-87DB-BB1D-CE65D622EFF6 (p4, c1, k60).
+1773857557: New connection from 172.26.0.5:48389 on port 1883.
+1773857557: New client connected from 172.26.0.5:48389 as auto-BD9A27C9-F17F-DF36-7EAE-C51441133C1A (p4, c1, k60).
+1773857557: New connection from 172.26.0.4:36359 on port 1883.
+1773857557: New client connected from 172.26.0.4:36359 as auto-01367B89-A69F-E75C-31F0-B6611AD6B825 (p4, c1, k60).

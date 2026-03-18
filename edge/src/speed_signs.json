@@ -1,0 +1,12 @@
+[
+  {
+    "sign_id": "sign_1",
+    "speed_limit": 50,
+    "location": [50.4504, 30.5245]
+  },
+  {
+    "sign_id": "sign_2",
+    "speed_limit": 30,
+    "location": [50.4510, 30.5238]
+  }
+]

@@ -7,8 +7,10 @@ from pathlib import Path
 
 from app.entities.agent_data import AgentData
 from app.entities.road_rule import RoadRule
+from app.entities.speed_sign import SpeedSign
 from app.entities.traffic_light_zone import TrafficLightZone
 from app.entities.violation_event import ViolationEvent
+from app.usecases.data_processing import detect_speeding_with_signs
 
 
 class ViolationDetector:
@@ -16,12 +18,14 @@ class ViolationDetector:
         self,
         road_rules: list[RoadRule],
         traffic_light_zones: list[TrafficLightZone],
+        speed_signs: list[SpeedSign],
         vehicle_id: str,
         min_movement_distance_m: float = 5.0,
         wrong_way_max_random_interval_s: float = 30.0,
     ):
         self.road_rules = road_rules
         self.traffic_light_zones = traffic_light_zones
+        self.speed_signs = speed_signs
         self.vehicle_id = vehicle_id
         self.min_movement_distance_m = min_movement_distance_m
         self.wrong_way_max_random_interval_s = wrong_way_max_random_interval_s
@@ -34,16 +38,19 @@ class ViolationDetector:
         cls,
         roads_config_path: str,
         traffic_lights_config_path: str,
+        speed_signs_config_path: str,
         vehicle_id: str,
         min_movement_distance_m: float = 5.0,
         wrong_way_max_random_interval_s: float = 30.0,
     ) -> "ViolationDetector":
         road_rules = cls._load_road_rules(roads_config_path)
         traffic_light_zones = cls._load_traffic_light_zones(traffic_lights_config_path)
+        speed_signs = cls._load_speed_signs(speed_signs_config_path)
 
         return cls(
             road_rules,
             traffic_light_zones,
+            speed_signs,
             vehicle_id,
             min_movement_distance_m,
             wrong_way_max_random_interval_s,
@@ -62,6 +69,20 @@ class ViolationDetector:
         road_rules = [RoadRule.model_validate(raw_rule) for raw_rule in raw_rules]
         logging.info("Loaded %s road rule(s) from %s", len(road_rules), config_path)
         return road_rules
+
+    @staticmethod
+    def _load_speed_signs(config_path: str) -> list[SpeedSign]:
+        path = Path(config_path)
+        if not path.exists():
+            logging.warning("Speed signs config not found: %s", config_path)
+            return []
+
+        with path.open("r", encoding="utf-8") as file:
+            raw_signs = json.load(file)
+
+        signs = [SpeedSign.model_validate(raw_sign) for raw_sign in raw_signs]
+        logging.info("Loaded %s speed sign(s) from %s", len(signs), config_path)
+        return signs
 
     @staticmethod
     def _load_traffic_light_zones(config_path: str) -> list[TrafficLightZone]:
@@ -99,7 +120,44 @@ class ViolationDetector:
                 previous_agent_data=previous_agent_data,
             )
         )
+        speeding = self.detect_speeding(
+            current_agent_data=current_agent_data,
+            previous_agent_data=previous_agent_data,
+        )
+        if speeding:
+            violations.append(speeding)
         return violations
+
+    def detect_speeding(
+        self,
+        current_agent_data: AgentData,
+        previous_agent_data: AgentData | None,
+    ) -> ViolationEvent | None:
+        if previous_agent_data is None or not self.speed_signs:
+            return None
+
+        time_delta = (
+            current_agent_data.timestamp - previous_agent_data.timestamp
+        ).total_seconds()
+        if time_delta <= 0:
+            return None
+
+        distance_m = self._distance_m(
+            previous_agent_data.gps.longitude,
+            previous_agent_data.gps.latitude,
+            current_agent_data.gps.longitude,
+            current_agent_data.gps.latitude,
+        )
+        speed_kmh = (distance_m / time_delta) * 3.6
+
+        return detect_speeding_with_signs(
+            speed_kmh=speed_kmh,
+            speed_signs=self.speed_signs,
+            latitude=current_agent_data.gps.latitude,
+            longitude=current_agent_data.gps.longitude,
+            vehicle_id=self.vehicle_id,
+            timestamp=current_agent_data.timestamp,
+        )
 
     def detect_red_light_violation(
         self,
