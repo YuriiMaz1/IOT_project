@@ -1,3 +1,4 @@
+import json
 import os
 import time
 from datetime import datetime
@@ -43,6 +44,9 @@ STORE_API_PORT = int(os.environ.get("STORE_API_PORT", "8000"))
 STORE_API_BASE_URL = f"http://{STORE_API_HOST}:{STORE_API_PORT}"
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SPEED_SIGNS_PATH = os.path.join(
+    os.path.dirname(BASE_DIR), "edge", "src", "speed_signs.json"
+)
 
 
 class StoreApiClient:
@@ -114,6 +118,7 @@ class MapViewApp(App):
         self.gps_record_ids: List[int] = []
         self.anomaly_markers: List[MapMarker] = []
         self.violation_markers: List[MapMarker] = []
+        self.speed_sign_markers: List[MapMarker] = []
 
         self.current_index = 0
         self.route_coordinates: List[Tuple[float, float]] = []
@@ -326,6 +331,7 @@ class MapViewApp(App):
         self._ensure_car_marker()
         self.check_road_quality()
         self._render_existing_violation_markers()
+        self._render_speed_signs()
         self._center_map_on_route()
 
         Clock.schedule_interval(self.update, 0.5)
@@ -542,6 +548,41 @@ class MapViewApp(App):
 
         for event_id in sorted(self.violation_events_by_id):
             self._add_violation_marker(self.violation_events_by_id[event_id])
+
+    def _render_speed_signs(self):
+        if not self.mapview:
+            return
+
+        for marker in self.speed_sign_markers:
+            self.mapview.remove_marker(marker)
+        self.speed_sign_markers = []
+
+        if not os.path.exists(SPEED_SIGNS_PATH):
+            print(f"Speed signs config not found: {SPEED_SIGNS_PATH}")
+            return
+
+        try:
+            with open(SPEED_SIGNS_PATH, "r", encoding="utf-8") as f:
+                signs = json.load(f)
+        except Exception as exc:
+            print(f"Error loading speed signs: {exc}")
+            return
+
+        icon_path = os.path.join(BASE_DIR, "images", "speed_sign.png")
+        for sign in signs:
+            location = sign.get("location", [])
+            if len(location) < 2:
+                continue
+            lon, lat = location[0], location[1]
+            marker = MapMarker(
+                lat=lat,
+                lon=lon,
+                source=icon_path,
+            )
+            self.mapview.add_marker(marker)
+            self.speed_sign_markers.append(marker)
+
+        print(f"Rendered {len(self.speed_sign_markers)} speed sign markers")
 
     def _show_violation_warning(self, event: Dict):
         self.latest_violation = event

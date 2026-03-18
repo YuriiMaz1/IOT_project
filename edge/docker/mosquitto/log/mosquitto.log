@@ -55,3 +55,40 @@
 1773857557: New client connected from 172.26.0.5:48389 as auto-BD9A27C9-F17F-DF36-7EAE-C51441133C1A (p4, c1, k60).
 1773857557: New connection from 172.26.0.4:36359 on port 1883.
 1773857557: New client connected from 172.26.0.4:36359 as auto-01367B89-A69F-E75C-31F0-B6611AD6B825 (p4, c1, k60).
+1773858009: New connection from 172.26.0.1:32808 on port 1883.
+1773858009: New client connected from 172.26.0.1:32808 as mqtt-explorer-1d51d89a (p4, c1, k60).
+1773858047: Client mqtt-explorer-1d51d89a [172.26.0.1:32808] disconnected.
+1773858097: mosquitto version 2.1.2 terminating
+1773858097: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1773861338: mosquitto version 2.1.2 starting
+1773861338: Config loaded from /mosquitto/config/mosquitto.conf.
+1773861338: Bridge support available.
+1773861338: Persistence support available.
+1773861338: TLS support available.
+1773861338: TLS-PSK support available.
+1773861338: Websockets support available.
+1773861338: Opening ipv4 listen socket on port 1883.
+1773861338: Opening ipv6 listen socket on port 1883.
+1773861338: mosquitto version 2.1.2 running
+1773861353: mosquitto version 2.1.2 terminating
+1773861353: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1773861358: mosquitto version 2.1.2 starting
+1773861358: Config loaded from /mosquitto/config/mosquitto.conf.
+1773861358: Bridge support available.
+1773861358: Persistence support available.
+1773861358: TLS support available.
+1773861358: TLS-PSK support available.
+1773861358: Websockets support available.
+1773861358: Opening ipv4 listen socket on port 1883.
+1773861358: Opening ipv6 listen socket on port 1883.
+1773861358: mosquitto version 2.1.2 running
+1773861358: New connection from 172.23.0.3:48907 on port 1883.
+1773861358: New client connected from 172.23.0.3:48907 as auto-C50D6D63-2607-7A7B-25AA-733B93C4C8C5 (p4, c1, k60).
+1773861359: New connection from 172.23.0.5:40139 on port 1883.
+1773861359: New client connected from 172.23.0.5:40139 as auto-D2A97052-C65B-C01C-FCAF-84F9303728B6 (p4, c1, k60).
+1773861359: New connection from 172.23.0.5:34065 on port 1883.
+1773861359: New client connected from 172.23.0.5:34065 as auto-60F8AB1A-08E7-032C-0BEE-F7E5ECBB926B (p4, c1, k60).
+1773861359: New connection from 172.23.0.5:36711 on port 1883.
+1773861359: New client connected from 172.23.0.5:36711 as auto-9479DD0A-3587-9C0F-6796-6ACE23613F0B (p4, c1, k60).
+1773861359: New connection from 172.23.0.4:59545 on port 1883.
+1773861359: New client connected from 172.23.0.4:59545 as auto-34E2D1E2-22D5-AFCF-A646-0B11F9CCB8E0 (p4, c1, k60).
